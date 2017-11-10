@@ -1,15 +1,15 @@
 #include "helper.c"
 #include "drawHelper.c"
 #include "vec.cc"
-#include "room.c"
+#include "room.cc"
 #include "entity.cc"
 
-Room r;
+Room *r;
 Entity *player;
 
-void init(){
-	Room_set(&r, 5, 5);
-	player=new Entity(5, 5, "player", '@');
+void onInit(){
+	r=new Room(5, 5, 5, 5);
+	player=new Entity(6, 6, "player", '@');
 }
 
 void onKey(int key){
@@ -19,26 +19,35 @@ void onKey(int key){
 		break;
 
 	case KEY_RIGHT:
-		if(Room_isGround(r, (*player).getX()+1, (*player).getY() ) ){
+		if( (*r).isGround( (*player)+Vec(1,0) ) ){
 			(*player).addX(1);
 		}
 		break;
 
 	case KEY_LEFT:
-		(*player).addX(-1);
+		if( (*r).isGround( (*player)+Vec(-1,0) ) ){
+			(*player).addX(-1);
+		}
 		break;
 
 	case KEY_UP:
-		(*player).addY(-1);
+		if( (*r).isGround( (*player)+Vec(0,-1) ) ){
+			(*player).addY(-1);
+		}
 		break;
 
 	case KEY_DOWN:
-		(*player).addY(1);
+		if( (*r).isGround( (*player)+Vec(0, 1) ) ){
+			(*player).addY(1);
+		}
 		break;
 	}
 }
 
-void draw(){
-	Room_draw(r, 5, 5);
+void onDraw(){
+	(*r).draw();
 	(*player).draw();
+}
+
+void onExit(){
 }

@@ -12,9 +12,9 @@ int main(){
 	noecho();
 	curs_set(0);
 
-	init();
+	onInit();
 
-	draw();
+	onDraw();
 
 	refresh();
 	
@@ -23,10 +23,12 @@ int main(){
 
 		erase();
 
-		draw();
+		onDraw();
 
 		refresh();
 	}while(again);
+
+	onExit();
 	
 	endwin();
 

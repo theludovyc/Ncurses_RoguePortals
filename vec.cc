@@ -52,4 +52,8 @@ public:
 	unsigned char getY(){
 		return y;
 	}
+
+	Vec operator+ (Vec v){
+		return Vec(x+v.x, y+v.y);
+	}
 };
