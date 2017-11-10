@@ -16,6 +16,10 @@ uchar Room_isGround(Room r, uchar x, uchar y){
 	return 1;
 }
 
+uchar Room_isGround(Room r, Vec v){
+	return Room_isGround(r, v.getX(), v.getY());
+}
+
 void Room_draw(Room r, uchar posX, uchar posY){
 	uchar i,j;
 	uchar c;

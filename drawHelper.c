@@ -1,5 +1,7 @@
+#define _DrawHelper
+
 void drawChar(unsigned int posX, unsigned int posY, const char c){
-	mvaddch(posX, posY, c);
+	mvaddch(posY, posX, c);
 }
 
 /*void drawBin(HDC memHdc, unsigned int posX, unsigned int posY, unsigned char c){
