@@ -76,4 +76,11 @@ public:
 	Vec operator+ (Vec v){
 		return Vec(x+v.x, y+v.y);
 	}
+
+	unsigned char operator== (Vec v){
+		if(x==v.x && y==v.y){
+			return 1;
+		}
+		return 0;
+	}
 };
