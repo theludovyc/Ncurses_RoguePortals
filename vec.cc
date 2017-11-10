@@ -24,6 +24,16 @@ public:
 		y=posY;
 	}
 
+	void setXY(Vec v){
+		x=v.x;
+		y=v.y;
+	}
+
+	void operator= (Vec v){
+		x=v.x;
+		y=v.y;
+	}
+
 	void setX(unsigned char posX){
 		x=posX;
 	}
@@ -35,6 +45,16 @@ public:
 	void addXY(unsigned char posX, unsigned char posY){
 		x+=posX;
 		y+=posY;
+	}
+
+	void addXY(Vec v){
+		x+=v.x;
+		y+=v.y;
+	}
+
+	void operator+= (Vec v){
+		x+=v.x;
+		y+=v.y;
 	}
 
 	void addX(unsigned char posX){

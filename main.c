@@ -21,6 +21,8 @@ int main(){
 	do{
 		onKey(wgetch(stdscr));
 
+		onUpdate();
+		
 		erase();
 
 		onDraw();

@@ -6,10 +6,14 @@
 
 Room *r;
 Entity *player;
+Vec *playerDir;
+Entity *nPortal;
 
 void onInit(){
-	r=new Room(5, 5, 5, 5);
-	player=new Entity(6, 6, "player", '@');
+	r=new Room(5, 4, 5, 5);
+	player=new Entity(7, 6, "player", '@');
+	playerDir=new Vec();
+	nPortal=new Entity(7, 4, "North Portal", 'O');
 }
 
 void onKey(int key){
@@ -19,34 +23,33 @@ void onKey(int key){
 		break;
 
 	case KEY_RIGHT:
-		if( (*r).isGround( (*player)+Vec(1,0) ) ){
-			(*player).addX(1);
-		}
+		(*playerDir).setXY(1, 0);
 		break;
 
 	case KEY_LEFT:
-		if( (*r).isGround( (*player)+Vec(-1,0) ) ){
-			(*player).addX(-1);
-		}
+		(*playerDir).setXY(-1, 0);
 		break;
 
 	case KEY_UP:
-		if( (*r).isGround( (*player)+Vec(0,-1) ) ){
-			(*player).addY(-1);
-		}
+		(*playerDir).setXY(0, -1);
 		break;
 
 	case KEY_DOWN:
-		if( (*r).isGround( (*player)+Vec(0, 1) ) ){
-			(*player).addY(1);
-		}
+	  (*playerDir).setXY(0, 1);
 		break;
+	}
+}
+
+void onUpdate(){
+	if( (*r).isGround( *player+*playerDir ) ){
+		(*player)+=(*playerDir);
 	}
 }
 
 void onDraw(){
 	(*r).draw();
 	(*player).draw();
+	(*nPortal).draw();
 }
 
 void onExit(){
