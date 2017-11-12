@@ -5,18 +5,34 @@
 #endif
 
 class Room:public Vec{
- protected:
+protected:
 	uchar roomL;
 	uchar roomH;
 
- public:
- Room(uchar posX, uchar posY, uchar rL, uchar rH)
-	 :Vec(posX, posY){
+public:
+	Room(uchar posX, uchar posY, uchar rL, uchar rH)
+		:Vec(posX, posY){
 		roomL=rL;
 		roomH=rH;
 	}
 
-	//algorithme faux si plusieurs rooms
+	void setLength(uchar rL){
+		roomL=rL;
+	}
+
+	uchar getLength(){
+		return roomL;
+	}
+
+	void setHeight(uchar rH){
+		roomH=rH;
+	}
+
+	uchar getHeight(){
+		return roomH;
+	}
+
+	//algorithme faux si plusieurs rooms active à la fois
 	uchar isGround(uchar posX, uchar posY){
 		if(posY==y || posX==x || posX==x+roomL-1 || posY==y+roomH-1){
 			return 0;

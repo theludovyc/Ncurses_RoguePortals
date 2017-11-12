@@ -9,11 +9,15 @@ public:
 	}
 
 	void close(){
-		myOpen=0;
+		if( myOpen!=0 ){
+			myOpen=0;
+		}
 	}
 
 	void open(){
-		myOpen=1;
+		if( myOpen!=1 ){
+			myOpen=1;
+		}
 	}
 
 	uchar isOpen(){
