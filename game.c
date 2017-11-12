@@ -40,10 +40,20 @@ void onInit(){
 	sPortal=new Portal(6, 8, "South Portal");
 }
 
+void gen_portalPosY(Portal *p){
+	if( (*r).getHeight()>3 ){
+		(*p).setY( rand_between( (*r).getY()+1, (*r).getY()+(*r).getHeight()-2 ) );
+	}else{
+		(*p).setY( (*r).getY()+1 );
+	}
+}
+
 void gen_portalE(){
 	if( (*r).getX()+(*r).getLength() < mapLength ){
 		(*ePortal).open();
 		(*ePortal).setX( (*r).getX()+(*r).getLength()-1 );
+
+		gen_portalPosY(ePortal);
 	}else{
 		(*ePortal).close();
 	}
@@ -53,8 +63,18 @@ void gen_portalW(){
 	if( (*r).getX()>1 ){
 		(*wPortal).open();
 		(*wPortal).setX( (*r).getX() );
+
+		gen_portalPosY(wPortal);
 	}else{
 		(*wPortal).close();
+	}
+}
+
+void gen_portalPosX(Portal *p){
+	if( (*r).getLength() >3 ){
+		(*p).setX( rand_between( (*r).getX()+1, (*r).getX()+(*r).getLength()-2 ) );
+	}else{
+		(*p).setX( (*r).getX()+1 );
 	}
 }
 
@@ -62,6 +82,8 @@ void gen_portalN(){
 	if( (*r).getY()>1 ){
 		(*nPortal).open();
 		(*nPortal).setY( (*r).getY() );
+
+		gen_portalPosX(nPortal);
 	}else{
 		(*nPortal).close();
 	}
@@ -71,15 +93,22 @@ void gen_portalS(){
 	if( (*r).getY()+(*r).getHeight() < mapHeight ){
 		(*sPortal).open();
 		(*sPortal).setY( (*r).getY()+(*r).getHeight()-1 );
+
+		gen_portalPosX(sPortal);
 	}else{
 		(*sPortal).close();
 	}
 }
 
+void gen_roomSetHeight(Portal p){
+	(*r).setY( rand_between(0, p.getY()-1 ) );
+
+	(*r).setHeight( rand_between( p.getY()+2-(*r).getY(), mapHeight+1-(*r).getY() ) );
+}
 
 void gen_roomE(){
 	(*wPortal).open();
-	(*wPortal).setX( (*ePortal).getX() );
+	(*wPortal).setXY(*ePortal);
 
 	(*r).setX( (*wPortal).getX() );
 
@@ -89,12 +118,16 @@ void gen_roomE(){
 		(*r).setLength( rand_between(3, mapLength-(*r).getX()+1 ) );
 	}
 
+  gen_roomSetHeight( *wPortal );
+
 	gen_portalE();
+	gen_portalN();
+	gen_portalS();
 }
 
 void gen_roomW(){
 	(*ePortal).open();
-	(*ePortal).setX( (*wPortal).getX() );
+	(*ePortal).setXY(*wPortal);
 
 	(*r).setX( (*ePortal).getX()-2 );
 
@@ -104,12 +137,22 @@ void gen_roomW(){
 
 	(*r).setLength( (*ePortal).getX()-(*r).getX() +1 );
 
+  gen_roomSetHeight( *ePortal );
+
 	gen_portalW();
+	gen_portalN();
+	gen_portalS();
+}
+
+void gen_roomLength(Portal p){
+	(*r).setX( rand_between(0, p.getX()-1 ) );
+
+	(*r).setLength( rand_between( p.getX()+2-(*r).getX(), mapLength+1-(*r).getX() ) );
 }
 
 void gen_roomN(){
 	(*sPortal).open();
-	(*sPortal).setY( (*nPortal).getY() );
+	(*sPortal).setXY(*nPortal);
 
 	(*r).setY( (*sPortal).getY()-2 );
 
@@ -119,12 +162,16 @@ void gen_roomN(){
 		
 	(*r).setHeight( (*sPortal).getY()-(*r).getY()+1 );
 
+	gen_roomLength(*sPortal);
+
 	gen_portalN();
+	gen_portalE();
+	gen_portalW();
 }
 
 void gen_roomS(){
 	(*nPortal).open();
-	(*nPortal).setY( (*sPortal).getY() );
+	(*nPortal).setXY(*sPortal);
 
 	(*r).setY( (*nPortal).getY() );
 
@@ -134,7 +181,11 @@ void gen_roomS(){
 		(*r).setHeight( rand_between(3, mapHeight-(*r).getY()+1 ) );
 	}
 
+	gen_roomLength(*nPortal);
+
 	gen_portalS();
+	gen_portalE();
+	gen_portalW();
 }
 
 void checkCol_room(){
@@ -229,6 +280,21 @@ void draw_portal(Portal *p){
 }
 
 void onDraw(){
+	int i;
+	char c;
+	for(i=0;i<13;i++){
+		if(i%4==0){
+			c='X';
+		}else{
+			c='+';
+		}
+
+		mvaddch(0, i, c);
+		mvaddch(i, 0, c);
+		mvaddch(12, i, c);
+		mvaddch(i, 12, c);
+	}
+	
 	(*r).draw();
 
 	draw_portal(ePortal);
@@ -237,21 +303,6 @@ void onDraw(){
 	draw_portal(sPortal);
 	
 	(*player).draw();
-
-	int i;
-	char c;
-	for(i=0;i<13;i++){
-		if(i%4==0){
-			c='X';
-		}else{
-			c='#';
-		}
-
-		mvaddch(0, i, c);
-		mvaddch(i, 0, c);
-		mvaddch(12, i, c);
-		mvaddch(i, 12, c);
-	}
 }
 
 void onExit(){
