@@ -1,56 +1,30 @@
 #define _Room
 
-#ifndef _Vec
-#include "vec.cc"
-#endif
-
-class Room:public Vec{
-protected:
-	uchar roomL;
-	uchar roomH;
-
+class Room:public Rect{
 public:
-	Room(uchar posX, uchar posY, uchar rL, uchar rH)
-		:Vec(posX, posY){
-		roomL=rL;
-		roomH=rH;
-	}
-
-	void setLength(uchar rL){
-		roomL=rL;
-	}
-
-	uchar getLength(){
-		return roomL;
-	}
-
-	void setHeight(uchar rH){
-		roomH=rH;
-	}
-
-	uchar getHeight(){
-		return roomH;
+	Room(uchar posX, uchar posY, uchar i, uchar j)
+		:Rect(posX, posY, i, j){
 	}
 
 	//algorithme faux si plusieurs rooms active à la fois
 	uchar isGround(uchar posX, uchar posY){
-		if(posY==y || posX==x || posX==x+roomL-1 || posY==y+roomH-1){
+		if(posY==y || posX==x || posX==getR()-1 || posY==getB()-1){
 			return 0;
 		}
 		return 1;
 	}
 
 	uchar isGround(Vec v){
-		return isGround(v.getX(), v.getY());
+		return isGround(v.x, v.y);
 	}
 
 	void draw(){
 		uchar i,j;
 		uchar c;
 
-		for(j=0;j<roomH;j++){
-			for(i=0;i<roomL;i++){
-				if(j==0 || i==0 || i==roomL-1 || j==roomH-1){
+		for(j=0;j<h;j++){
+			for(i=0;i<w;i++){
+				if(j==0 || i==0 || i==w-1 || j==h-1){
 					c='#';
 				}else{
 					c='.';

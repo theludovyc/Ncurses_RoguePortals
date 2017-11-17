@@ -1,9 +1,5 @@
 #define _Entity
 
-#ifndef _Vec
-#include "vec.cc"
-#endif
-
 class Entity:public Vec{
 protected:
 	const char *name;
